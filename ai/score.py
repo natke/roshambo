@@ -45,7 +45,7 @@ def init():
 
     logger.info('loading model')
     session = rt.InferenceSession(str(model_file),
-                    providers=['CUDAExecutionProvider'])
+                    providers=['CPUExecutionProvider'])
     input_name = session.get_inputs()[0].name
     logger.info(f'model load complete (entry: {input_name})')
     transform = transforms.Compose([
@@ -152,13 +152,13 @@ if __name__ == '__main__':
     inf('https://aiadvocate.z5.web.core.windows.net/rock.png', 'rock')
     inf('https://aiadvocate.z5.web.core.windows.net/paper.png', 'paper')
     inf('https://aiadvocate.z5.web.core.windows.net/scissors.png', 'scissors')   
-    inf('bad_uri', 'Bad Uri')
+    #inf('bad_uri', 'Bad Uri')
 
-    with open('testimage.txt', 'r') as f:
-        img = f.read()
-        inf(img, 'rock')
+#    with open('testimage.txt', 'r') as f:
+#        img = f.read()
+#        inf(img, 'rock')
 
 
-    with open('fullimage.txt', 'r') as f:
-        img = f.read()
-        inf(img, 'none')
+#    with open('fullimage.txt', 'r') as f:
+#        img = f.read()
+#        inf(img, 'none')

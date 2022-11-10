@@ -7,14 +7,16 @@ const inferencekey = process.env["INFERENCE_KEY"] || '';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const response = await axios.post(inferenceApi, req.body,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${inferencekey}`,
-        },
-      }
-    );
+    //
+    //const response = await axios.post(inferenceApi, req.body,
+    //  {
+    //    headers: {
+    //      "Content-Type": "application/json",
+    //      Authorization: `Bearer ${inferencekey}`,
+    //    },
+    //  }
+    //);
+    const response = {data: {prediction: "rock"}}
     res.status(200).json(response.data);
   } catch (error) {
     const e = <RestError>error;

@@ -1,4 +1,3 @@
---extra-index-url https://download.pytorch.org/whl/cu116
 torch
 torchvision
 torchaudio
@@ -6,5 +5,4 @@ mlflow
 jsonargparse[signatures]
 pytorch-lightning[extra]
 ipykernel
-onnxruntime-gpu
 inference-schema
