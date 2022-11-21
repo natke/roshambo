@@ -34,6 +34,10 @@ module.exports = {
           from: './model/model.with_pre_post_processing.onnx',
           to: 'static/chunks/pages',
         },
+        {
+          from: './model/model.onnx',
+          to: 'static/chunks/pages',
+        },
       ],
     })
     );
