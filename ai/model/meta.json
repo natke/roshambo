@@ -1,0 +1,12 @@
+{
+    "classes": [
+        "none",
+        "paper",
+        "rock",
+        "scissors"
+    ],
+    "model": "resnet18",
+    "params": 11693516,
+    "size": 46761539,
+    "timestamp": "2022-10-13T23:58:48.615218"
+}

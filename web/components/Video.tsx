@@ -49,6 +49,7 @@ export const Video = forwardRef<VideoRef, Props>(
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         (async () => {
           try {
+            console.log(device)
             let stream = await navigator.mediaDevices.getUserMedia({
               video: {
                 deviceId: {

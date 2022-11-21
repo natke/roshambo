@@ -1,9 +1,8 @@
-import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { Video, VideoRef } from "~/components/Video";
 import DeviceSelector from "~/components/DeviceSelector";
 import Theme from "~/components/layout/theme";
+import { predict } from "../util/predict";
 
 interface Scores {
   none: number;
@@ -38,9 +37,10 @@ export default function Home() {
         },
       };
 
+      console.log("Setting image")
       image.current && (image.current.src = frame);
-      const response = await fetch("/api/analyze", options);
-      const pred: Prediction = await response.json();
+      console.log("Calling predict")
+      const pred: Prediction = await predict(image)
       setPrediction(pred);
     })();
   };
@@ -49,6 +49,7 @@ export default function Home() {
     if (videoRef.current) {
       const frame = videoRef.current?.getFrame();
       if (frame) {
+        console.log("Setting frame")
         setFrame(frame);
       }
     }
