@@ -10,7 +10,8 @@ export const predict = async (canvas: HTMLCanvasElement): Promise<Inference> => 
         console.log("Creating ORT inference session")
         const session = await ort.InferenceSession.create('./_next/static/chunks/pages/model.with_pre_post_processing.onnx')
 
-        // Get the image bytes from the canvas 
+        // Get the image bytes from the canvas
+        // TODO: simplify this, or add to model 
         const ctx = canvas.getContext("2d");
         const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height).data;
         const uint8Array = Array.prototype.slice.call(imageData)
