@@ -1,19 +1,19 @@
 # Test in-model pre and post processing with python AP
 import os
+from PIL import Image
 import numpy as np
 import onnxruntime
-import onnxruntime_extensions
 
-input_image_path = os.path.join("paper.png")
-input_bytes = np.fromfile(input_image_path, dtype=np.uint8)
+im = Image.open("scissors.png").convert("RGB")
+print(im.format, im.size, im.mode)
+image = np.array(im)
 
 # Load the model
 session_options = onnxruntime.SessionOptions()
-session_options.register_custom_ops_library(onnxruntime_extensions.get_library_path())
 session = onnxruntime.InferenceSession('model.with_pre_post_processing.onnx', session_options)
 
 # Run the model
-results = session.run(["prediction"], {"image": input_bytes})
+results = session.run(["prediction"], {"image": image[...,:3]})
 
 print(results[0])
 

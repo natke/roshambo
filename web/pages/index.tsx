@@ -2,23 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { Video, VideoRef } from "~/components/Video";
 import DeviceSelector from "~/components/DeviceSelector";
 import Theme from "~/components/layout/theme";
+import {Prediction} from "../util/helpers"
 import { predict } from "../util/predict";
 
-interface Scores {
-  none: number;
-  paper: number;
-  rock: number;
-  scissors: number;
-}
-
-interface Prediction {
-  time: number;
-  prediction: string;
-  scores: Scores;
-  timestamp: string;
-  model_update: string;
-  message: string;
-}
 
 export default function Home() {
   const [videoId, setVideoId] = useState<string>("");
@@ -27,7 +13,7 @@ export default function Home() {
   const image = useRef<HTMLImageElement>(null);
   const videoRef = useRef <VideoRef>(null);
 
-  const setFrame = (frame: string) => {
+  const setFrame = (frame: HTMLCanvasElement) => {
     (async () => {
       const options: RequestInit = {
         method: "POST",
@@ -37,10 +23,8 @@ export default function Home() {
         },
       };
 
-      console.log("Setting image")
-      image.current && (image.current.src = frame);
-      console.log("Calling predict")
-      const pred: Prediction = await predict(image)
+      image.current && (image.current.src = frame.toDataURL());
+      const pred: Prediction = await predict(frame)
       setPrediction(pred);
     })();
   };
@@ -49,7 +33,6 @@ export default function Home() {
     if (videoRef.current) {
       const frame = videoRef.current?.getFrame();
       if (frame) {
-        console.log("Setting frame")
         setFrame(frame);
       }
     }

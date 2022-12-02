@@ -8,3 +8,26 @@ export const getMediaDevices = async (): Promise<MediaDeviceInfo[]> => {
     return []
   }
 }
+
+export interface Scores {
+  none: number;
+  paper: number;
+  rock: number;
+  scissors: number;
+}
+
+export const OUTCOMES =  [
+  'None',
+  'Paper',
+  'Rock',
+  'Scissors'
+]
+
+export interface Prediction {
+  time: number;
+  prediction: string;
+  scores: Scores;
+  timestamp: string;
+  model_update: string;
+  message: string;
+}

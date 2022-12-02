@@ -14,7 +14,7 @@ interface Props {
 }
 
 export interface VideoRef {
-  getFrame(): string | null;
+  getFrame(): HTMLCanvasElement | null;
 }
 
 export const Video = forwardRef<VideoRef, Props>(
@@ -39,7 +39,7 @@ export const Video = forwardRef<VideoRef, Props>(
         const ctx = canvas.getContext("2d");
         if (ctx) {
           ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-          return canvas.toDataURL();
+          return canvas;
         }
       }
       return null;

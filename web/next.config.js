@@ -38,6 +38,10 @@ module.exports = {
           from: './model/model.onnx',
           to: 'static/chunks/pages',
         },
+        {
+          from: './model/paper.png',
+          to: 'static/chunks/pages',
+        },
       ],
     })
     );

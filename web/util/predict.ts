@@ -1,39 +1,48 @@
-import path from 'path';
-import * as ort from 'onnxruntime-web';
-import * as base64js from 'base64-js' 
+import * as math from 'mathjs'
+import * as ort from 'onnxruntime-web'
+import { OUTCOMES } from './helpers';
 
-export const predict = async (image): Promise<Inference> => {
+
+export const predict = async (canvas: HTMLCanvasElement): Promise<Inference> => {
     try {
-        //Find the absolute path of the model directory
-        const modelDirectory = path.join(process.cwd(), 'model');
 
-        console.log(await image.current.decode())
-    
         // TODO Move session initialization into app initialization
         console.log("Creating ORT inference session")
         const session = await ort.InferenceSession.create('./_next/static/chunks/pages/model.with_pre_post_processing.onnx')
-        console.log(session)
 
-        console.log(image.current.width)
-        console.log(image.current.height)
-        console.log(image.current.width * image.current.height * 3)
+        // Get the image bytes from the canvas 
+        const ctx = canvas.getContext("2d");
+        const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height).data;
+        const uint8Array = Array.prototype.slice.call(imageData)
+        const numPixels = canvas.width * canvas.height
 
-        // Get the image bytes from the base64 string
-        const uint8array = base64js.toByteArray(image.current.src.replace('data:image/png;base64,', ''))
-        console.log(uint8array.length)
+        const rgba = math.reshape(uint8Array, [uint8Array.length/4, 4]);
+        const test = math.subset(rgba, math.index(math.range(0, numPixels), [0,1,2]));
+        const rgb = math.reshape(test, [numPixels * 3])
 
-        const inputTensor = new ort.Tensor("uint8", uint8array, [uint8array.length]);
-    
-        // Run inference
+        console.log ("creating input tensor")
+        const inputTensor = new ort.Tensor("uint8", rgb, [canvas.height, canvas.width, 3]);    
         const feeds: Record<string, ort.Tensor> = {};
         feeds[session.inputNames[0]] = inputTensor;
+
+
+        // Run inference
+        console.log("Running inference")
         const outputData = await session.run(feeds);
         const output = outputData[session.outputNames[0]];
-       
-        console.log(output)
-       
-        
-        return { time: 1668548621, prediction: 'rock', scores: [1, 0, 0], timestamp: 1668548621, model_update: 3, message: 'Hello' }
+
+        const max = Math.max(...output.data);
+        const index = output.data.indexOf(max);
+        const prediction = OUTCOMES[index];
+
+        return {
+          time: 1,
+          prediction: prediction,
+          scores: { none: output.data[0], paper: output.data[1], rock: output.data[2], scissors: output.data[3]},
+          timestamp: new Date(),
+          model_update: 3,
+          message: 'Prediction'
+        }
     
       } catch (error) {
         console.log(error)

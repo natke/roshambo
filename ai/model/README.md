@@ -2,13 +2,13 @@
 
 1. Get model from Seth's original runs
 
-2. Clone onnxruntime-extensions repo with Scott's branch (skottmckay/VisionStarter)
+2. Clone onnxruntime-extensions repo
 
    Run the augmentation script to produce in model pre and post processing
 
    ```bash
    cd onnxruntime-extensions/tools
-   add_pre_post_processing_to_model.py [-h] -t mobilenet --model_source pytorch <path>/model.onnx
+   add_pre_post_processing_to_model.py -t resnet --model_source pytorch <path>/model.onnx
    ```
 
    This generates `<path>/model.with_pre_post_processing.onnx`
